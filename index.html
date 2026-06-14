@@ -5,159 +5,128 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>BBFS 7D Shinobi Result Center</title>
   <meta name="description" content="Website statis BBFS 7D dan Result Center bergaya premium anime ninja berbasis data JSON manual.">
-  <meta name="theme-color" content="#130b16">
-  <link rel="stylesheet" href="assets/css/style.css">
-  <link rel="stylesheet" href="assets/css/shinobi-premium.css">
+  <meta name="theme-color" content="#07030a">
+  <link rel="stylesheet" href="assets/css/shinobi-dashboard.css">
 </head>
 <body>
-  <header class="hero">
-    <nav class="nav">
-      <a class="brand" href="#top" aria-label="BBFS 7D Home">
-        <span class="brand-mark">7D</span>
-        <span>
-          <strong>BBFS 7D</strong>
-          <small>Shinobi Result Center</small>
-        </span>
-      </a>
-      <div class="nav-links" aria-label="Navigasi utama">
-        <a class="is-active" data-icon="⌂" href="#top">Beranda</a>
-        <a data-icon="✣" href="#result">Result</a>
-        <a data-icon="⌁" href="#bbfs">BBFS</a>
-        <a data-icon="卷" href="#arsip">Arsip</a>
-        <a data-icon="書" href="#panduan">Panduan</a>
-        <a data-icon="◎" href="#bbfs">Statistik</a>
-        <a data-icon="✦" href="#result">Prediksi</a>
-      </div>
+  <div class="scene scene-left" aria-hidden="true"></div>
+  <div class="scene scene-right" aria-hidden="true"></div>
+  <div class="ember-layer" aria-hidden="true"></div>
+
+  <header class="top-shell" id="top">
+    <a class="brand" href="#top" aria-label="BBFS 7D Home">
+      <span class="brand-orb">✦</span>
+      <span>
+        <strong>BBFS 7D</strong>
+        <small>SHINOBI RESULT CENTER</small>
+      </span>
+    </a>
+
+    <nav class="top-tabs" aria-label="Navigasi utama">
+      <a class="is-active" data-icon="⌂" href="#top">Beranda</a>
+      <a data-icon="✣" href="#result">Result</a>
+      <a data-icon="⌁" href="#bbfs">BBFS</a>
+      <a data-icon="卷" href="#arsip">Arsip</a>
+      <a data-icon="書" href="#panduan">Panduan</a>
+      <a data-icon="◎" href="#statistik">Statistik</a>
+      <a data-icon="✦" href="#prediksi">Prediksi</a>
     </nav>
 
-    <section id="top" class="hero-grid">
-      <div class="hero-copy">
-        <p class="eyebrow">Premium shinobi theme • Manual update • VPS ready</p>
-        <h1>BBFS 7D Bergaya Shinobi</h1>
-        <p class="lead">Tampilan premium bernuansa chakra orange–black untuk menampilkan result terbaru, arsip, dan BBFS 7 digit dari file JSON. Ringan untuk VPS, tetap responsive di HP.</p>
-        <div class="hero-actions">
-          <a class="button primary" href="#result">Lihat Result</a>
-          <a class="button ghost" href="#panduan">Cara Update</a>
-        </div>
-      </div>
-      <aside class="status-card" aria-live="polite">
-        <span class="status-dot"></span>
-        <p>Status Data</p>
-        <strong id="globalStatus">Memuat...</strong>
-        <small id="lastUpdated">-</small>
-      </aside>
-    </section>
-
-    <section class="feature-strip" aria-label="Menu fitur premium">
-      <a class="feature-card feature-result" href="#result">
-        <span class="feature-icon" aria-hidden="true"></span>
-        <h3>Result</h3>
-        <p>Lihat hasil terbaru</p>
-        <span class="feature-arrow">›</span>
-      </a>
-      <a class="feature-card feature-bbfs" href="#bbfs">
-        <span class="feature-icon" aria-hidden="true"></span>
-        <h3>BBFS</h3>
-        <p>7 digit BBFS</p>
-        <span class="feature-arrow">›</span>
-      </a>
-      <a class="feature-card feature-arsip" href="#arsip">
-        <span class="feature-icon" aria-hidden="true"></span>
-        <h3>Arsip</h3>
-        <p>Riwayat result</p>
-        <span class="feature-arrow">›</span>
-      </a>
-      <a class="feature-card feature-panduan" href="#panduan">
-        <span class="feature-icon" aria-hidden="true"></span>
-        <h3>Panduan</h3>
-        <p>Cara update data</p>
-        <span class="feature-arrow">›</span>
-      </a>
-      <a class="feature-card feature-statistik" href="#bbfs">
-        <span class="feature-icon" aria-hidden="true"></span>
-        <h3>Statistik</h3>
-        <p>Data dan pola</p>
-        <span class="feature-arrow">›</span>
-      </a>
-      <a class="feature-card feature-prediksi" href="#result">
-        <span class="feature-icon" aria-hidden="true"></span>
-        <h3>Prediksi</h3>
-        <p>Kandidat hari ini</p>
-        <span class="feature-arrow">›</span>
-      </a>
-    </section>
+    <div class="time-pill">
+      <span>◷</span>
+      <strong id="lastUpdated">Memuat...</strong>
+    </div>
   </header>
 
-  <main>
-    <section class="section warning-box">
-      <h2>Catatan Penting</h2>
-      <p>Website ini hanya menampilkan data, arsip, dan perhitungan statistik/manual. Informasi BBFS bukan jaminan hasil dan bukan ajakan taruhan.</p>
-    </section>
+  <section class="hero-stage">
+    <div class="moon" aria-hidden="true"></div>
+    <div class="chakra-ring" aria-hidden="true"></div>
+    <p class="brush-top">DASHBOARD</p>
+    <h1>BBFS 7D</h1>
+    <p class="brush-sub">BERGAYA SHINOBI</p>
+    <p class="hero-subtitle">✦ Informasi Result, BBFS, Statistik & Prediksi 7D Terpercaya ✦</p>
+  </section>
 
-    <section id="result" class="section">
-      <div class="section-head">
-        <div>
-          <p class="eyebrow">Result terbaru</p>
-          <h2>Pilih Pasaran</h2>
-        </div>
+  <section class="feature-strip" aria-label="Menu fitur premium">
+    <a class="feature-card feature-result" href="#result">
+      <span class="feature-icon" aria-hidden="true"></span>
+      <span class="feature-copy"><strong>Result</strong><small>Lihat hasil terbaru</small></span>
+      <span class="feature-arrow">›</span>
+    </a>
+    <a class="feature-card feature-bbfs" href="#bbfs">
+      <span class="feature-icon" aria-hidden="true"></span>
+      <span class="feature-copy"><strong>BBFS</strong><small>7 digit BBFS</small></span>
+      <span class="feature-arrow">›</span>
+    </a>
+    <a class="feature-card feature-arsip" href="#arsip">
+      <span class="feature-icon" aria-hidden="true"></span>
+      <span class="feature-copy"><strong>Arsip</strong><small>Riwayat result</small></span>
+      <span class="feature-arrow">›</span>
+    </a>
+    <a class="feature-card feature-panduan" href="#panduan">
+      <span class="feature-icon" aria-hidden="true"></span>
+      <span class="feature-copy"><strong>Panduan</strong><small>Cara update</small></span>
+      <span class="feature-arrow">›</span>
+    </a>
+    <a class="feature-card feature-statistik" href="#statistik">
+      <span class="feature-icon" aria-hidden="true"></span>
+      <span class="feature-copy"><strong>Statistik</strong><small>Data & pola</small></span>
+      <span class="feature-arrow">›</span>
+    </a>
+    <a class="feature-card feature-prediksi" href="#prediksi">
+      <span class="feature-icon" aria-hidden="true"></span>
+      <span class="feature-copy"><strong>Prediksi</strong><small>Kandidat hari ini</small></span>
+      <span class="feature-arrow">›</span>
+    </a>
+  </section>
+
+  <main class="dashboard-grid">
+    <section class="panel result-panel" id="result">
+      <div class="panel-title red"><span>✣</span><h2>Result Terbaru</h2></div>
+      <div class="period-row">
+        <span>Periode</span>
         <select id="marketSelect" aria-label="Pilih pasaran"></select>
+        <b id="marketStatus">-</b>
       </div>
-
-      <div class="cards" id="summaryCards"></div>
-
-      <div class="panel">
-        <div class="panel-head">
-          <div>
-            <h3 id="marketTitle">-</h3>
-            <p id="marketMeta" class="muted">Memuat data pasaran...</p>
-          </div>
-          <span class="pill" id="marketStatus">-</span>
-        </div>
-        <div class="result-number" id="latestResult">----</div>
-        <div class="result-detail" id="latestDetail">-</div>
-      </div>
+      <p class="market-name" id="marketTitle">-</p>
+      <p class="market-meta" id="marketMeta">Memuat data pasaran...</p>
+      <div class="result-number" id="latestResult">----</div>
+      <div class="result-detail" id="latestDetail">-</div>
     </section>
 
-    <section id="bbfs" class="section two-col">
-      <div class="panel">
-        <p class="eyebrow">BBFS utama</p>
-        <h2>BBFS 7 Digit</h2>
-        <div class="digits" id="bbfsDigits">-</div>
-        <p class="muted" id="bbfsNote">Memuat BBFS...</p>
-      </div>
-      <div class="panel">
-        <p class="eyebrow">Kandidat</p>
-        <h2>Ranking 2D / 3D</h2>
-        <div class="ranking-grid">
-          <div>
-            <h3>Ranking 2D</h3>
-            <ol id="rank2d" class="rank-list"></ol>
-          </div>
-          <div>
-            <h3>Ranking 3D</h3>
-            <ol id="rank3d" class="rank-list"></ol>
-          </div>
-        </div>
-      </div>
+    <section class="panel bbfs-panel" id="bbfs">
+      <div class="panel-title gold"><span>✦</span><h2>BBFS 7D Terbaru</h2></div>
+      <div class="digits" id="bbfsDigits">-</div>
+      <p class="bbfs-note" id="bbfsNote">Memuat BBFS...</p>
     </section>
 
-    <section id="arsip" class="section">
-      <div class="section-head">
-        <div>
-          <p class="eyebrow">Arsip result</p>
-          <h2>Riwayat Terakhir</h2>
-        </div>
-        <button class="button ghost" id="copyJsonBtn" type="button">Copy JSON</button>
+    <section class="panel rank2-panel" id="prediksi">
+      <div class="panel-title red"><span>✣</span><h2>Ranking 2D</h2></div>
+      <ol id="rank2d" class="rank-list"></ol>
+      <a class="more-link" href="#arsip"><span>Lihat Selengkapnya</span><span>›</span></a>
+    </section>
+
+    <section class="panel rank3-panel" id="statistik">
+      <div class="panel-title purple"><span>✦</span><h2>Ranking 3D</h2></div>
+      <ol id="rank3d" class="rank-list"></ol>
+      <a class="more-link" href="#arsip"><span>Lihat Selengkapnya</span><span>›</span></a>
+    </section>
+
+    <section class="panel archive-panel" id="arsip">
+      <div class="copy-row">
+        <div class="panel-title gold"><span>卷</span><h2>Arsip Result Terbaru</h2></div>
+        <button class="button" id="copyJsonBtn" type="button">Copy JSON</button>
       </div>
       <div class="table-wrap">
         <table>
           <thead>
             <tr>
+              <th>Periode</th>
               <th>Tanggal</th>
-              <th>Pasaran</th>
-              <th>Result</th>
+              <th>Result 7D</th>
               <th>BBFS</th>
-              <th>Status</th>
+              <th>2D Top</th>
+              <th>3D Top</th>
             </tr>
           </thead>
           <tbody id="archiveTable"></tbody>
@@ -165,10 +134,9 @@
       </div>
     </section>
 
-    <section id="panduan" class="section panel guide">
-      <p class="eyebrow">Panduan update</p>
-      <h2>Cara Update Data</h2>
-      <p>Edit file <code>data/results.json</code>, lalu ubah bagian <code>markets</code>. Setelah commit ke GitHub, website akan membaca data terbaru.</p>
+    <section class="panel guide-panel" id="panduan">
+      <div class="panel-title blue"><span>書</span><h2>Panduan Update</h2></div>
+      <p>Website ini membaca data dari <code>data/results.json</code>. Ubah result, BBFS, ranking 2D, ranking 3D, dan history di file tersebut, lalu update VPS dari GitHub.</p>
       <pre><code>{
   "name": "SINGAPORE",
   "latest_result": "1234",
@@ -179,7 +147,7 @@
   </main>
 
   <footer class="footer">
-    <p>© <span id="year"></span> BBFS 7D Shinobi Result Center. Static website by Junaidi.</p>
+    <p>© <span id="year"></span> BBFS 7D Shinobi Result Center. Data/statistik bukan jaminan hasil.</p>
   </footer>
 
   <script src="assets/js/app.js"></script>
