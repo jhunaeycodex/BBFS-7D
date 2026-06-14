@@ -7,6 +7,7 @@
   <meta name="description" content="Website statis BBFS 7D dan Result Center bergaya premium anime ninja berbasis data JSON manual.">
   <meta name="theme-color" content="#130b16">
   <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="assets/css/shinobi-premium.css">
 </head>
 <body>
   <header class="hero">
@@ -19,17 +20,20 @@
         </span>
       </a>
       <div class="nav-links" aria-label="Navigasi utama">
-        <a href="#result">Result</a>
-        <a href="#bbfs">BBFS</a>
-        <a href="#arsip">Arsip</a>
-        <a href="#panduan">Panduan</a>
+        <a class="is-active" data-icon="⌂" href="#top">Beranda</a>
+        <a data-icon="✣" href="#result">Result</a>
+        <a data-icon="⌁" href="#bbfs">BBFS</a>
+        <a data-icon="卷" href="#arsip">Arsip</a>
+        <a data-icon="書" href="#panduan">Panduan</a>
+        <a data-icon="◎" href="#bbfs">Statistik</a>
+        <a data-icon="✦" href="#result">Prediksi</a>
       </div>
     </nav>
 
     <section id="top" class="hero-grid">
       <div class="hero-copy">
         <p class="eyebrow">Premium shinobi theme • Manual update • VPS ready</p>
-        <h1>Dashboard BBFS 7D Bergaya Anime Ninja</h1>
+        <h1>BBFS 7D Bergaya Shinobi</h1>
         <p class="lead">Tampilan premium bernuansa chakra orange–black untuk menampilkan result terbaru, arsip, dan BBFS 7 digit dari file JSON. Ringan untuk VPS, tetap responsive di HP.</p>
         <div class="hero-actions">
           <a class="button primary" href="#result">Lihat Result</a>
@@ -42,6 +46,45 @@
         <strong id="globalStatus">Memuat...</strong>
         <small id="lastUpdated">-</small>
       </aside>
+    </section>
+
+    <section class="feature-strip" aria-label="Menu fitur premium">
+      <a class="feature-card feature-result" href="#result">
+        <span class="feature-icon" aria-hidden="true"></span>
+        <h3>Result</h3>
+        <p>Lihat hasil terbaru</p>
+        <span class="feature-arrow">›</span>
+      </a>
+      <a class="feature-card feature-bbfs" href="#bbfs">
+        <span class="feature-icon" aria-hidden="true"></span>
+        <h3>BBFS</h3>
+        <p>7 digit BBFS</p>
+        <span class="feature-arrow">›</span>
+      </a>
+      <a class="feature-card feature-arsip" href="#arsip">
+        <span class="feature-icon" aria-hidden="true"></span>
+        <h3>Arsip</h3>
+        <p>Riwayat result</p>
+        <span class="feature-arrow">›</span>
+      </a>
+      <a class="feature-card feature-panduan" href="#panduan">
+        <span class="feature-icon" aria-hidden="true"></span>
+        <h3>Panduan</h3>
+        <p>Cara update data</p>
+        <span class="feature-arrow">›</span>
+      </a>
+      <a class="feature-card feature-statistik" href="#bbfs">
+        <span class="feature-icon" aria-hidden="true"></span>
+        <h3>Statistik</h3>
+        <p>Data dan pola</p>
+        <span class="feature-arrow">›</span>
+      </a>
+      <a class="feature-card feature-prediksi" href="#result">
+        <span class="feature-icon" aria-hidden="true"></span>
+        <h3>Prediksi</h3>
+        <p>Kandidat hari ini</p>
+        <span class="feature-arrow">›</span>
+      </a>
     </section>
   </header>
 
@@ -87,11 +130,11 @@
         <h2>Ranking 2D / 3D</h2>
         <div class="ranking-grid">
           <div>
-            <h3>2D</h3>
+            <h3>Ranking 2D</h3>
             <ol id="rank2d" class="rank-list"></ol>
           </div>
           <div>
-            <h3>3D</h3>
+            <h3>Ranking 3D</h3>
             <ol id="rank3d" class="rank-list"></ol>
           </div>
         </div>
