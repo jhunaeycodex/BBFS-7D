@@ -1,5 +1,3 @@
-const STORAGE_KEY = 'bbfs7d.importedCsvData.v1';
-
 const state = {
   data: null,
   selectedMarket: null
@@ -33,10 +31,29 @@ function setHTML(selector, value) {
   if (node) node.innerHTML = value;
 }
 
+async function fetchJson(url, options) {
+  const response = await fetch(url, options);
+  const text = await response.text();
+  let payload = null;
+  try {
+    payload = text ? JSON.parse(text) : null;
+  } catch (error) {
+    throw new Error(`Respons API bukan JSON valid: ${url}`);
+  }
+  if (!response.ok) {
+    throw new Error(payload?.error || `${url} HTTP ${response.status}`);
+  }
+  return payload;
+}
+
 async function loadData() {
-  const response = await fetch('data/results.json?t=' + Date.now(), { cache: 'no-store' });
-  if (!response.ok) throw new Error(`data/results.json HTTP ${response.status}`);
-  return response.json();
+  try {
+    return await fetchJson('api/results.php?t=' + Date.now(), { cache: 'no-store' });
+  } catch (apiError) {
+    const response = await fetch('data/results.json?t=' + Date.now(), { cache: 'no-store' });
+    if (!response.ok) throw new Error(`data/results.json HTTP ${response.status}`);
+    return response.json();
+  }
 }
 
 function getMarkets() {
@@ -180,172 +197,6 @@ function setupCopyJson() {
   });
 }
 
-function splitValues(value) {
-  return safeText(value, '')
-    .split(/[|,\s]+/)
-    .map((item) => item.trim())
-    .filter(Boolean);
-}
-
-function digitsFromResult(result) {
-  const source = safeText(result, '').replace(/\D/g, '').split('');
-  const unique = [];
-  source.forEach((digit) => {
-    if (!unique.includes(digit)) unique.push(digit);
-  });
-  return unique.slice(0, 7);
-}
-
-function pairsFromResult(result) {
-  const clean = safeText(result, '').replace(/\D/g, '');
-  const pairs = [];
-  for (let i = 0; i < clean.length - 1; i += 1) pairs.push(clean.slice(i, i + 2));
-  return [...new Set(pairs)].slice(0, 5);
-}
-
-function triplesFromResult(result) {
-  const clean = safeText(result, '').replace(/\D/g, '');
-  const triples = [];
-  for (let i = 0; i < clean.length - 2; i += 1) triples.push(clean.slice(i, i + 3));
-  return [...new Set(triples)].slice(0, 5);
-}
-
-function parseCsvLine(line, delimiter) {
-  const values = [];
-  let value = '';
-  let quoted = false;
-
-  for (let i = 0; i < line.length; i += 1) {
-    const char = line[i];
-    const next = line[i + 1];
-    if (char === '"' && quoted && next === '"') {
-      value += '"';
-      i += 1;
-    } else if (char === '"') {
-      quoted = !quoted;
-    } else if (char === delimiter && !quoted) {
-      values.push(value.trim());
-      value = '';
-    } else {
-      value += char;
-    }
-  }
-
-  values.push(value.trim());
-  return values;
-}
-
-function normalizeHeader(header) {
-  return safeText(header, '')
-    .trim()
-    .toLowerCase()
-    .replace(/\s+/g, '_')
-    .replace(/[^a-z0-9_]/g, '');
-}
-
-function getCsvValue(row, names) {
-  for (const name of names) {
-    const key = normalizeHeader(name);
-    if (row[key] !== undefined && row[key] !== '') return row[key];
-  }
-  return '';
-}
-
-function parseCsv(text) {
-  const lines = safeText(text, '')
-    .replace(/^\uFEFF/, '')
-    .split(/\r?\n/)
-    .map((line) => line.trim())
-    .filter(Boolean);
-
-  if (lines.length < 2) throw new Error('CSV harus memiliki header dan minimal 1 baris data.');
-
-  const delimiter = (lines[0].split(';').length > lines[0].split(',').length) ? ';' : ',';
-  const headers = parseCsvLine(lines[0], delimiter).map(normalizeHeader);
-
-  return lines.slice(1).map((line) => {
-    const values = parseCsvLine(line, delimiter);
-    const row = {};
-    headers.forEach((header, index) => {
-      row[header || `col_${index}`] = values[index] || '';
-    });
-    return row;
-  });
-}
-
-function makeRanking(numbers) {
-  return numbers.map((number, index) => ({
-    number,
-    note: index === 0 ? 'CSV top' : `CSV ${index + 1}`
-  }));
-}
-
-function buildDataFromCsv(rows) {
-  const normalized = rows.map((row, index) => {
-    const result = getCsvValue(row, ['result', 'latest_result', 'result_7d', 'angka', 'nomor']);
-    const bbfs = splitValues(getCsvValue(row, ['bbfs', 'bbfs_7d', 'bbfs7d'])) || [];
-    const top2d = splitValues(getCsvValue(row, ['top_2d', 'ranking_2d', '2d_top', 'top2d']));
-    const top3d = splitValues(getCsvValue(row, ['top_3d', 'ranking_3d', '3d_top', 'top3d']));
-
-    return {
-      name: getCsvValue(row, ['market', 'pasaran', 'name']) || 'IMPORT CSV',
-      period: getCsvValue(row, ['period', 'periode', 'status']) || `#CSV-${index + 1}`,
-      date: getCsvValue(row, ['date', 'tanggal', 'latest_date']) || new Date().toISOString().slice(0, 10),
-      dateDisplay: getCsvValue(row, ['date_display', 'tanggal_display']) || '',
-      result,
-      bbfs: bbfs.length ? bbfs.slice(0, 7) : digitsFromResult(result),
-      top2d: top2d.length ? top2d.slice(0, 5) : pairsFromResult(result),
-      top3d: top3d.length ? top3d.slice(0, 5) : triplesFromResult(result)
-    };
-  }).filter((row) => row.result);
-
-  if (!normalized.length) throw new Error('CSV tidak memiliki kolom result/latest_result/result_7d yang valid.');
-
-  const latest = normalized[0];
-  const nowText = new Intl.DateTimeFormat('id-ID', {
-    day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit', timeZone: 'Asia/Jakarta'
-  }).format(new Date()).replace('.', ':');
-
-  return {
-    site_name: 'BBFS 7D Shinobi Result Center',
-    last_updated: `${nowText} WIB · Import CSV`,
-    timezone: 'Asia/Jakarta',
-    update_mode: 'import-csv-browser',
-    markets: [{
-      name: latest.name,
-      status: latest.period,
-      period: latest.period,
-      draw_time: 'CSV',
-      latest_date: latest.date,
-      latest_date_display: latest.dateDisplay || formatDate(latest.date),
-      latest_result: latest.result,
-      description: `Data diimport dari CSV. Result utama: ${latest.result}`,
-      bbfs_7d: latest.bbfs,
-      bbfs_note: 'BBFS 7D sinkron dari CSV/import result.',
-      ranking_2d: makeRanking(latest.top2d),
-      ranking_3d: makeRanking(latest.top3d),
-      history: normalized.map((row) => ({
-        period: row.period,
-        date: row.date,
-        date_display: row.dateDisplay || formatDate(row.date),
-        result: row.result,
-        bbfs_7d: row.bbfs,
-        top_2d: row.top2d,
-        top_3d: row.top3d
-      }))
-    }]
-  };
-}
-
-function applyData(nextData, statusText) {
-  state.data = nextData;
-  renderMarketOptions();
-  renderSelectedMarket();
-  renderArchive();
-  setText('#lastUpdated', safeText(state.data?.last_updated, 'Data online'));
-  setText('#csvImportStatus', statusText || 'Data aktif');
-}
-
 function setupCsvImport() {
   const button = $('#csvImportBtn');
   const input = $('#csvFileInput');
@@ -358,34 +209,37 @@ function setupCsvImport() {
     if (!file) return;
 
     try {
-      setText('#csvImportStatus', 'Membaca CSV...');
-      const text = await file.text();
-      const rows = parseCsv(text);
-      const nextData = buildDataFromCsv(rows);
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(nextData));
-      applyData(nextData, `CSV aktif: ${file.name}`);
+      setText('#csvImportStatus', 'Upload CSV ke MySQL...');
+      button.disabled = true;
+      const formData = new FormData();
+      formData.append('csv_file', file);
+      const result = await fetchJson('api/import-csv.php', {
+        method: 'POST',
+        body: formData,
+        cache: 'no-store'
+      });
+      setText('#csvImportStatus', `MySQL aktif: ${result.inserted || 0} baris`);
+      state.data = await loadData();
+      renderMarketOptions();
+      renderSelectedMarket();
+      renderArchive();
+      setText('#lastUpdated', safeText(state.data?.last_updated, 'MySQL updated'));
     } catch (error) {
-      setText('#csvImportStatus', error.message || 'Gagal import CSV');
+      setText('#csvImportStatus', error.message || 'Gagal import ke MySQL');
     } finally {
+      button.disabled = false;
       input.value = '';
     }
   });
 
   if (reset) {
-    reset.addEventListener('click', () => {
-      localStorage.removeItem(STORAGE_KEY);
-      location.reload();
+    reset.addEventListener('click', async () => {
+      setText('#csvImportStatus', 'Reset hanya reload data aktif');
+      state.data = await loadData();
+      renderMarketOptions();
+      renderSelectedMarket();
+      renderArchive();
     });
-  }
-}
-
-function getStoredImport() {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    return raw ? JSON.parse(raw) : null;
-  } catch (error) {
-    localStorage.removeItem(STORAGE_KEY);
-    return null;
   }
 }
 
@@ -395,14 +249,17 @@ async function boot() {
   setupCsvImport();
 
   try {
-    const baseData = await loadData();
-    const importedData = getStoredImport();
-    applyData(importedData || baseData, importedData ? 'CSV lokal aktif' : 'CSV belum diimport');
+    state.data = await loadData();
+    setText('#lastUpdated', safeText(state.data?.last_updated, 'Data online'));
+    setText('#csvImportStatus', state.data?.update_mode === 'mysql' ? 'MySQL aktif' : 'CSV belum diimport');
+    renderMarketOptions();
+    renderSelectedMarket();
+    renderArchive();
   } catch (error) {
     setText('#lastUpdated', 'Error');
-    setText('#marketMeta', 'Gagal memuat data. Cek file data/results.json.');
+    setText('#marketMeta', 'Gagal memuat data. Cek MySQL/API atau data/results.json.');
     setText('#latestResult', 'ERR');
-    setText('#csvImportStatus', 'Gagal memuat data awal');
+    setText('#csvImportStatus', error.message || 'Gagal memuat data');
   }
 }
 
