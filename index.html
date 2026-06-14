@@ -2,12 +2,12 @@
 <html lang="id">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=1450, initial-scale=1, maximum-scale=3">
+  <meta name="viewport" content="width=1536, initial-scale=1, maximum-scale=3">
   <title>BBFS 7D Shinobi Result Center</title>
   <meta name="description" content="Website statis BBFS 7D dan Result Center bergaya premium anime ninja berbasis data JSON manual.">
   <meta name="theme-color" content="#07030a">
-  <link rel="stylesheet" href="assets/css/shinobi-dashboard.css?v=20260614-0918">
-  <link rel="stylesheet" href="assets/css/mockup-bg.css?v=20260614-0918">
+  <link rel="stylesheet" href="assets/css/shinobi-dashboard.css?v=20260614-0930">
+  <link rel="stylesheet" href="assets/css/mockup-bg.css?v=20260614-0930">
 </head>
 <body>
   <div class="scene scene-left" aria-hidden="true"></div>
@@ -51,32 +51,32 @@
   <section class="feature-strip" aria-label="Menu fitur premium">
     <a class="feature-card feature-result" href="#result">
       <span class="feature-icon" aria-hidden="true"></span>
-      <span class="feature-copy"><strong>Result</strong><small>Lihat hasil terbaru</small></span>
+      <span class="feature-copy"><strong>Result</strong><small>Lihat Hasil Terbaru</small></span>
       <span class="feature-arrow">›</span>
     </a>
     <a class="feature-card feature-bbfs" href="#bbfs">
       <span class="feature-icon" aria-hidden="true"></span>
-      <span class="feature-copy"><strong>BBFS</strong><small>7 digit BBFS</small></span>
+      <span class="feature-copy"><strong>BBFS</strong><small>7 Digit BBFS</small></span>
       <span class="feature-arrow">›</span>
     </a>
     <a class="feature-card feature-arsip" href="#arsip">
       <span class="feature-icon" aria-hidden="true"></span>
-      <span class="feature-copy"><strong>Arsip</strong><small>Riwayat result</small></span>
+      <span class="feature-copy"><strong>Arsip</strong><small>Riwayat Result</small></span>
       <span class="feature-arrow">›</span>
     </a>
     <a class="feature-card feature-panduan" href="#panduan">
       <span class="feature-icon" aria-hidden="true"></span>
-      <span class="feature-copy"><strong>Panduan</strong><small>Cara update</small></span>
+      <span class="feature-copy"><strong>Panduan</strong><small>Cara Bermain</small></span>
       <span class="feature-arrow">›</span>
     </a>
     <a class="feature-card feature-statistik" href="#statistik">
       <span class="feature-icon" aria-hidden="true"></span>
-      <span class="feature-copy"><strong>Statistik</strong><small>Data & pola</small></span>
+      <span class="feature-copy"><strong>Statistik</strong><small>Data & Pola</small></span>
       <span class="feature-arrow">›</span>
     </a>
     <a class="feature-card feature-prediksi" href="#prediksi">
       <span class="feature-icon" aria-hidden="true"></span>
-      <span class="feature-copy"><strong>Prediksi</strong><small>Kandidat hari ini</small></span>
+      <span class="feature-copy"><strong>Prediksi</strong><small>Angka Jitu Hari Ini</small></span>
       <span class="feature-arrow">›</span>
     </a>
   </section>
@@ -85,9 +85,10 @@
     <section class="panel result-panel" id="result">
       <div class="panel-title red"><span>✣</span><h2>Result Terbaru</h2></div>
       <div class="period-row">
-        <span>Periode</span>
+        <span>Periode:</span>
+        <b id="marketDate">-</b>
+        <b id="marketPeriod">-</b>
         <select id="marketSelect" aria-label="Pilih pasaran"></select>
-        <b id="marketStatus">-</b>
       </div>
       <p class="market-name" id="marketTitle">-</p>
       <p class="market-meta" id="marketMeta">Memuat data pasaran...</p>
@@ -128,29 +129,19 @@
               <th>BBFS</th>
               <th>2D Top</th>
               <th>3D Top</th>
+              <th></th>
             </tr>
           </thead>
           <tbody id="archiveTable"></tbody>
         </table>
       </div>
     </section>
-
-    <section class="panel guide-panel" id="panduan">
-      <div class="panel-title blue"><span>書</span><h2>Panduan Update</h2></div>
-      <p>Website ini membaca data dari <code>data/results.json</code>. Ubah result, BBFS, ranking 2D, ranking 3D, dan history di file tersebut, lalu update VPS dari GitHub.</p>
-      <pre><code>{
-  "name": "SINGAPORE",
-  "latest_result": "1234",
-  "latest_date": "2026-06-14",
-  "bbfs_7d": ["1", "2", "3", "4", "5", "6", "7"]
-}</code></pre>
-    </section>
   </main>
 
-  <footer class="footer">
+  <footer class="footer" id="panduan">
     <p>© <span id="year"></span> BBFS 7D Shinobi Result Center. Data/statistik bukan jaminan hasil.</p>
   </footer>
 
-  <script src="assets/js/app.js?v=20260614-0918"></script>
+  <script src="assets/js/app.js?v=20260614-0930"></script>
 </body>
 </html>
