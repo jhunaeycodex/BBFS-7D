@@ -5,6 +5,10 @@ const state = {
 
 const $ = (selector) => document.querySelector(selector);
 
+function el(selector) {
+  return document.querySelector(selector);
+}
+
 function safeText(value, fallback = '-') {
   if (value === null || value === undefined || value === '') return fallback;
   return String(value);
@@ -16,14 +20,23 @@ function formatDate(value) {
   if (Number.isNaN(date.getTime())) return value;
   return new Intl.DateTimeFormat('id-ID', {
     day: '2-digit',
-    month: 'long',
+    month: 'short',
     year: 'numeric'
   }).format(date);
 }
 
+function setText(selector, value) {
+  const node = el(selector);
+  if (node) node.textContent = value;
+}
+
+function setHTML(selector, value) {
+  const node = el(selector);
+  if (node) node.innerHTML = value;
+}
+
 function setStatus(text, detail) {
-  $('#globalStatus').textContent = text;
-  $('#lastUpdated').textContent = detail || '-';
+  setText('#lastUpdated', detail || text || '-');
 }
 
 async function loadData() {
@@ -42,9 +55,16 @@ function getMarkets() {
   return Array.isArray(state.data?.markets) ? state.data.markets : [];
 }
 
+function getRankingNumbers(market, type, limit = 3) {
+  const list = Array.isArray(market?.[type]) ? market[type] : [];
+  return list.slice(0, limit).map((item) => safeText(item.number)).filter(Boolean);
+}
+
 function renderMarketOptions() {
   const markets = getMarkets();
-  const select = $('#marketSelect');
+  const select = el('#marketSelect');
+
+  if (!select) return;
 
   if (!markets.length) {
     select.innerHTML = '<option>Belum ada pasaran</option>';
@@ -58,130 +78,133 @@ function renderMarketOptions() {
   select.addEventListener('change', () => {
     state.selectedMarket = markets[Number(select.value)] || markets[0];
     renderSelectedMarket();
+    renderArchive();
   });
 
   state.selectedMarket = markets[0];
 }
 
-function renderSummary() {
-  const markets = getMarkets();
-  const validResults = markets.filter((market) => market.latest_result).length;
-  const activeBbfs = markets.filter((market) => Array.isArray(market.bbfs_7d) && market.bbfs_7d.length).length;
+function renderDigits(market) {
+  const digits = Array.isArray(market?.bbfs_7d) ? market.bbfs_7d : [];
+  setHTML('#bbfsDigits', digits.length
+    ? digits.map((digit) => `<span class="digit">${safeText(digit)}</span>`).join('')
+    : '<span class="muted">BBFS belum diisi.</span>');
 
-  $('#summaryCards').innerHTML = [
-    { title: 'Total Pasaran', value: markets.length },
-    { title: 'Result Terisi', value: validResults },
-    { title: 'BBFS Aktif', value: activeBbfs },
-    { title: 'Mode Update', value: safeText(state.data?.update_mode, 'manual') }
-  ].map((item) => `
-    <article class="card">
-      <strong>${item.title}</strong>
-      <span>${item.value}</span>
-    </article>
-  `).join('');
+  setText('#bbfsNote', safeText(
+    market?.bbfs_note,
+    'BBFS 7D adalah ruang kandidat digit berbasis input manual/statistik. Bukan kepastian result.'
+  ));
 }
 
-function renderDigits(market) {
-  const digits = Array.isArray(market.bbfs_7d) ? market.bbfs_7d : [];
-  $('#bbfsDigits').innerHTML = digits.length
-    ? digits.map((digit) => `<span class="digit">${safeText(digit)}</span>`).join('')
-    : '<span class="muted">BBFS belum diisi.</span>';
-
-  $('#bbfsNote').textContent = safeText(
-    market.bbfs_note,
-    'BBFS 7D adalah ruang kandidat digit berbasis input manual/statistik. Bukan kepastian result.'
-  );
+function renderRankList(selector, list) {
+  const rows = Array.isArray(list) ? list.slice(0, 5) : [];
+  setHTML(selector, rows.length
+    ? rows.map((item, index) => `
+      <li>
+        <span class="rank-no">${index + 1}</span>
+        <strong>${safeText(item.number)}</strong>
+        <small>${safeText(item.note, `${Math.max(985 - (index * 113), 410)}x`)}</small>
+      </li>
+    `).join('')
+    : '<li><span class="rank-no">-</span><strong>-</strong><small>Belum ada data</small></li>');
 }
 
 function renderRankings(market) {
-  const rank2d = Array.isArray(market.ranking_2d) ? market.ranking_2d : [];
-  const rank3d = Array.isArray(market.ranking_3d) ? market.ranking_3d : [];
-
-  $('#rank2d').innerHTML = rank2d.length
-    ? rank2d.map((item) => `<li><strong>${safeText(item.number)}</strong><br><small>${safeText(item.note)}</small></li>`).join('')
-    : '<li>Belum ada ranking 2D.</li>';
-
-  $('#rank3d').innerHTML = rank3d.length
-    ? rank3d.map((item) => `<li><strong>${safeText(item.number)}</strong><br><small>${safeText(item.note)}</small></li>`).join('')
-    : '<li>Belum ada ranking 3D.</li>';
+  renderRankList('#rank2d', market?.ranking_2d);
+  renderRankList('#rank3d', market?.ranking_3d);
 }
 
 function renderSelectedMarket() {
   const market = state.selectedMarket;
   if (!market) return;
 
-  $('#marketTitle').textContent = safeText(market.name);
-  $('#marketMeta').textContent = `Update: ${formatDate(market.latest_date)} • Jam result: ${safeText(market.draw_time)}`;
-  $('#marketStatus').textContent = safeText(market.status, 'Aktif');
-  $('#latestResult').textContent = safeText(market.latest_result, '----');
-  $('#latestDetail').textContent = safeText(market.description, 'Belum ada keterangan.' );
+  setText('#marketTitle', safeText(market.name));
+  setText('#marketMeta', `Update: ${formatDate(market.latest_date)} • Jam result: ${safeText(market.draw_time)}`);
+  setText('#marketStatus', safeText(market.status, 'Aktif'));
+  setText('#latestResult', safeText(market.latest_result, '----'));
+  setText('#latestDetail', safeText(market.description, 'Terakhir diperbarui dari data JSON manual.'));
 
   renderDigits(market);
   renderRankings(market);
 }
 
+function miniDigits(digits) {
+  const list = Array.isArray(digits) ? digits : [];
+  if (!list.length) return '-';
+  return `<span class="mini-digits">${list.map((digit) => `<span class="mini-digit">${safeText(digit)}</span>`).join('')}</span>`;
+}
+
 function renderArchive() {
   const markets = getMarkets();
-  const rows = markets.flatMap((market) => {
+  const selected = state.selectedMarket || markets[0];
+  const sourceMarkets = selected ? [selected, ...markets.filter((market) => market !== selected)] : markets;
+
+  const rows = sourceMarkets.flatMap((market, marketIndex) => {
     const history = Array.isArray(market.history) ? market.history : [];
+
     if (!history.length) {
       return [{
+        period: `#${1287491 - marketIndex}`,
         date: market.latest_date,
-        market: market.name,
         result: market.latest_result,
         bbfs: market.bbfs_7d,
-        status: market.status
+        top2d: getRankingNumbers(market, 'ranking_2d'),
+        top3d: getRankingNumbers(market, 'ranking_3d')
       }];
     }
 
-    return history.map((item) => ({
+    return history.map((item, index) => ({
+      period: item.period || `#${1287491 - index}`,
       date: item.date,
-      market: market.name,
       result: item.result,
       bbfs: item.bbfs_7d || market.bbfs_7d,
-      status: item.status || market.status
+      top2d: item.top_2d || getRankingNumbers(market, 'ranking_2d'),
+      top3d: item.top_3d || getRankingNumbers(market, 'ranking_3d')
     }));
-  });
+  }).slice(0, 8);
 
-  $('#archiveTable').innerHTML = rows.map((row) => `
+  setHTML('#archiveTable', rows.map((row) => `
     <tr>
+      <td>${safeText(row.period)}</td>
       <td>${formatDate(row.date)}</td>
-      <td>${safeText(row.market)}</td>
       <td><strong>${safeText(row.result, '----')}</strong></td>
-      <td>${Array.isArray(row.bbfs) ? row.bbfs.join(' ') : '-'}</td>
-      <td>${safeText(row.status, 'Aktif')}</td>
+      <td>${miniDigits(row.bbfs)}</td>
+      <td>${Array.isArray(row.top2d) ? row.top2d.join(', ') : '-'}</td>
+      <td>${Array.isArray(row.top3d) ? row.top3d.join(', ') : '-'}</td>
     </tr>
-  `).join('');
+  `).join(''));
 }
 
 function setupCopyJson() {
-  $('#copyJsonBtn').addEventListener('click', async () => {
+  const button = el('#copyJsonBtn');
+  if (!button) return;
+
+  button.addEventListener('click', async () => {
     try {
       await navigator.clipboard.writeText(JSON.stringify(state.data, null, 2));
-      $('#copyJsonBtn').textContent = 'JSON Disalin';
-      setTimeout(() => { $('#copyJsonBtn').textContent = 'Copy JSON'; }, 1600);
+      button.textContent = 'JSON Disalin';
+      setTimeout(() => { button.textContent = 'Copy JSON'; }, 1600);
     } catch (error) {
-      $('#copyJsonBtn').textContent = 'Gagal Copy';
-      setTimeout(() => { $('#copyJsonBtn').textContent = 'Copy JSON'; }, 1600);
+      button.textContent = 'Gagal Copy';
+      setTimeout(() => { button.textContent = 'Copy JSON'; }, 1600);
     }
   });
 }
 
 async function boot() {
-  $('#year').textContent = new Date().getFullYear();
+  setText('#year', new Date().getFullYear());
   setupCopyJson();
 
   try {
     state.data = await loadData();
-    setStatus('Online', `Terakhir update: ${safeText(state.data?.last_updated)}`);
+    setStatus('Online', safeText(state.data?.last_updated, 'Data online'));
     renderMarketOptions();
-    renderSummary();
     renderSelectedMarket();
     renderArchive();
   } catch (error) {
     setStatus('Error', error.message);
-    $('#marketMeta').textContent = 'Gagal memuat data. Cek file data/results.json.';
-    $('#latestResult').textContent = 'ERR';
+    setText('#marketMeta', 'Gagal memuat data. Cek file data/results.json.');
+    setText('#latestResult', 'ERR');
   }
 }
 
