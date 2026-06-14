@@ -1,55 +1,71 @@
 {
-  "site_name": "BBFS 7D Result Center",
-  "last_updated": "2026-06-14 08:00 WIB",
+  "site_name": "BBFS 7D Shinobi Result Center",
+  "last_updated": "14 Jun 2025 · 08:30 WIB",
   "timezone": "Asia/Jakarta",
   "update_mode": "manual-json",
   "markets": [
     {
-      "name": "SINGAPORE",
-      "status": "Aktif",
-      "draw_time": "17:45 WIB",
-      "latest_date": "2026-06-14",
-      "latest_result": "1234",
-      "description": "Contoh data. Ganti dengan result asli saat update manual.",
-      "bbfs_7d": ["1", "2", "3", "4", "5", "6", "7"],
-      "bbfs_note": "Contoh BBFS 7D. Silakan sesuaikan dengan analisis atau input manual Anda.",
+      "name": "SHINOBI 7D",
+      "status": "#1287491",
+      "period": "#1287491",
+      "draw_time": "08:30 WIB",
+      "latest_date": "2025-06-14",
+      "latest_date_display": "2025-06-14",
+      "latest_result": "2718549",
+      "description": "Terakhir diperbarui: 14 Jun 2025 08:30 WIB",
+      "bbfs_7d": ["2", "7", "1", "8", "5", "4", "9"],
+      "bbfs_note": "BBFS 7D terbaru sinkron dengan result utama dan arsip result.",
       "ranking_2d": [
-        { "number": "12", "note": "Contoh kandidat 2D" },
-        { "number": "34", "note": "Contoh kandidat 2D" },
-        { "number": "56", "note": "Contoh kandidat 2D" }
+        { "number": "27", "note": "1,236x" },
+        { "number": "71", "note": "1,128x" },
+        { "number": "18", "note": "892x" },
+        { "number": "54", "note": "723x" },
+        { "number": "49", "note": "651x" }
       ],
       "ranking_3d": [
-        { "number": "123", "note": "Contoh kandidat 3D" },
-        { "number": "456", "note": "Contoh kandidat 3D" },
-        { "number": "671", "note": "Contoh kandidat 3D" }
+        { "number": "271", "note": "2,349x" },
+        { "number": "718", "note": "2,001x" },
+        { "number": "185", "note": "1,542x" },
+        { "number": "549", "note": "1,102x" },
+        { "number": "854", "note": "985x" }
       ],
       "history": [
-        { "date": "2026-06-14", "result": "1234", "status": "Contoh" },
-        { "date": "2026-06-13", "result": "5678", "status": "Contoh" }
-      ]
-    },
-    {
-      "name": "HONGKONG",
-      "status": "Aktif",
-      "draw_time": "23:00 WIB",
-      "latest_date": "2026-06-14",
-      "latest_result": "9876",
-      "description": "Contoh data. Ganti dengan result asli saat update manual.",
-      "bbfs_7d": ["9", "8", "7", "6", "5", "4", "3"],
-      "bbfs_note": "Contoh BBFS 7D untuk tampilan awal website.",
-      "ranking_2d": [
-        { "number": "98", "note": "Contoh kandidat 2D" },
-        { "number": "76", "note": "Contoh kandidat 2D" },
-        { "number": "54", "note": "Contoh kandidat 2D" }
-      ],
-      "ranking_3d": [
-        { "number": "987", "note": "Contoh kandidat 3D" },
-        { "number": "765", "note": "Contoh kandidat 3D" },
-        { "number": "543", "note": "Contoh kandidat 3D" }
-      ],
-      "history": [
-        { "date": "2026-06-14", "result": "9876", "status": "Contoh" },
-        { "date": "2026-06-13", "result": "4321", "status": "Contoh" }
+        {
+          "period": "#1287491",
+          "date": "2025-06-14",
+          "date_display": "14 Jun 2025 08:30",
+          "result": "2718549",
+          "bbfs_7d": ["2", "7", "1", "8", "5", "4", "9"],
+          "top_2d": ["27", "71", "18"],
+          "top_3d": ["271", "718", "185"]
+        },
+        {
+          "period": "#1287490",
+          "date": "2025-06-14",
+          "date_display": "14 Jun 2025 04:30",
+          "result": "9364201",
+          "bbfs_7d": ["9", "3", "6", "4", "2", "0", "1"],
+          "top_2d": ["36", "64", "42"],
+          "top_3d": ["936", "364", "642"]
+        },
+        {
+          "period": "#1287489",
+          "date": "2025-06-13",
+          "date_display": "13 Jun 2025 23:30",
+          "result": "6083712",
+          "bbfs_7d": ["6", "0", "8", "3", "7", "1", "2"],
+          "top_2d": ["08", "37", "71"],
+          "top_3d": ["608", "083", "371"]
+        },
+        {
+          "period": "#1287488",
+          "date": "2025-06-13",
+          "date_display": "13 Jun 2025 20:30",
+          "result": "1549863",
+          "bbfs_7d": ["1", "5", "4", "9", "8", "6", "3"],
+          "top_2d": ["15", "49", "86"],
+          "top_3d": ["154", "498", "986"]
+        }
       ]
     }
   ]
