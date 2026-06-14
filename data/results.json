@@ -1,0 +1,56 @@
+{
+  "site_name": "BBFS 7D Result Center",
+  "last_updated": "2026-06-14 08:00 WIB",
+  "timezone": "Asia/Jakarta",
+  "update_mode": "manual-json",
+  "markets": [
+    {
+      "name": "SINGAPORE",
+      "status": "Aktif",
+      "draw_time": "17:45 WIB",
+      "latest_date": "2026-06-14",
+      "latest_result": "1234",
+      "description": "Contoh data. Ganti dengan result asli saat update manual.",
+      "bbfs_7d": ["1", "2", "3", "4", "5", "6", "7"],
+      "bbfs_note": "Contoh BBFS 7D. Silakan sesuaikan dengan analisis atau input manual Anda.",
+      "ranking_2d": [
+        { "number": "12", "note": "Contoh kandidat 2D" },
+        { "number": "34", "note": "Contoh kandidat 2D" },
+        { "number": "56", "note": "Contoh kandidat 2D" }
+      ],
+      "ranking_3d": [
+        { "number": "123", "note": "Contoh kandidat 3D" },
+        { "number": "456", "note": "Contoh kandidat 3D" },
+        { "number": "671", "note": "Contoh kandidat 3D" }
+      ],
+      "history": [
+        { "date": "2026-06-14", "result": "1234", "status": "Contoh" },
+        { "date": "2026-06-13", "result": "5678", "status": "Contoh" }
+      ]
+    },
+    {
+      "name": "HONGKONG",
+      "status": "Aktif",
+      "draw_time": "23:00 WIB",
+      "latest_date": "2026-06-14",
+      "latest_result": "9876",
+      "description": "Contoh data. Ganti dengan result asli saat update manual.",
+      "bbfs_7d": ["9", "8", "7", "6", "5", "4", "3"],
+      "bbfs_note": "Contoh BBFS 7D untuk tampilan awal website.",
+      "ranking_2d": [
+        { "number": "98", "note": "Contoh kandidat 2D" },
+        { "number": "76", "note": "Contoh kandidat 2D" },
+        { "number": "54", "note": "Contoh kandidat 2D" }
+      ],
+      "ranking_3d": [
+        { "number": "987", "note": "Contoh kandidat 3D" },
+        { "number": "765", "note": "Contoh kandidat 3D" },
+        { "number": "543", "note": "Contoh kandidat 3D" }
+      ],
+      "history": [
+        { "date": "2026-06-14", "result": "9876", "status": "Contoh" },
+        { "date": "2026-06-13", "result": "4321", "status": "Contoh" }
+      ]
+    }
+  ]
+}
