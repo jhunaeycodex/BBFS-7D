@@ -20,8 +20,11 @@ apt install -y nginx git ca-certificates
 echo "==> Siapkan folder website: ${SITE_DIR}"
 mkdir -p "${SITE_DIR}"
 
+git config --global --add safe.directory "${SITE_DIR}" || true
+
 if [ -d "${SITE_DIR}/.git" ]; then
   echo "==> Update repo existing"
+  git -C "${SITE_DIR}" config --global --add safe.directory "${SITE_DIR}" || true
   git -C "${SITE_DIR}" fetch --all
   git -C "${SITE_DIR}" reset --hard origin/main
 else
@@ -33,6 +36,8 @@ fi
 chown -R www-data:www-data "${SITE_DIR}"
 find "${SITE_DIR}" -type d -exec chmod 755 {} \;
 find "${SITE_DIR}" -type f -exec chmod 644 {} \;
+
+git config --global --add safe.directory "${SITE_DIR}" || true
 
 if [ "${DOMAIN}" = "_" ]; then
   SERVER_NAME="_"
